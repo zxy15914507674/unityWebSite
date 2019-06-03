@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}">
+    <script th:src="@{/static/layui/layui.js}"></script>
+    <script th:src="@{/static/layui/jquery-3.3.1.min.js}"></script>
+</head>
+<body>
+<button class="layui-btn" onclick="add()">新增</button>
+<table id="newstable" lay-filter="newstabletool">
+</table>
+
+</body>
+
+<!--工具条-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script type="text/javascript">
+
+    layui.use(['table','laypage','layer','element','laytpl'], function(){
+        var laypage=layui.laypage;
+        var table = layui.table;
+        var layer=layui.layer;
+        var element = layui.element;
+        var laytpl=layui.laytpl;
+        //第一个实例
+        table.render({
+            elem: '#newstable'
+            ,url: '/root/getallnews' //数据接口
+            ,page: true //开启分页
+            ,method: 'get'
+            ,limit:10
+            ,limits:[5,10,15]
+            ,cols: [
+                [ //表头
+                    {field: 'id', title: 'ID', width:100,  fixed: 'left'}
+                    ,{field: 'newsname', title: '公告名称', width:100}
+                    ,{field: 'newscontent', title: '公告描述', width:100}
+                    ,{field: 'ctime', title: '创建时间', width:100}
+                    ,{field: 'option', title: '选项', width:180,toolbar: '#barDemo'}
+                ]
+            ]
+        });
+
+
+        table.on('tool(newstabletool)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+
+            if(layEvent === 'del'){ //删除
+                layer.confirm('真的删除么', function(index){
+                    //向服务端发送删除指令
+                    $.get("/root/delnews",{
+                        id : data.id
+                    },function(data1,textStatus){
+                        if(data1.msg === '200'){
+                            layer.msg("删除成功", {icon :1});
+                            obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                            layer.close(index);
+                        }else{
+                            layer.msg("删除失败，联系管理员",{icon :2});
+                            layer.close(index);
+                        }
+                    },"json");
+                });
+            }
+        });
+    });
+
+    function add(){
+        parent.opentab('新增公告','createnews');
+    }
+</script>
+
+
+</html>

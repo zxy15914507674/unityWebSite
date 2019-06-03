@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>登陆unity实验系统</title>
+<script th:src="@{/static/layui/jquery-3.3.1.min.js}"></script>
+<link th:href="@{/static/css/register.css}" rel="stylesheet">
+
+
+</head>
+<body>
+	<div class="top_div" align="center" style="position: absolute">
+		<div class="success_info">
+			[[#{registersuccess.success}]]<b><span id="layer">3</span></b>[[#{registersuccess.jump}]]<a href="/">[[#{registersuccess.click}]]</a>
+		</div>
+	</div>
+	<div style="text-align:center;padding-top: 30px">Copyright ©
+		2018-2019 unity实验系统 版权所有 >_<</div>
+</body>
+
+<script type="text/javascript">
+
+	$(function () {
+		var time = 4;
+		window.setTimeout(returnUrlByTime, 1000);
+
+		function returnUrlByTime() {
+			window.setTimeout(returnUrlByTime, 1000);
+			console.log(time);
+			time = time - 1;
+			if(time<=0){
+				time = 0;
+				window.setTimeout("window.location.href='/';window.event.returnValue=false;", 0);
+			}
+			document.getElementById("layer").innerHTML = time;
+		}
+	});
+
+
+	function returnUrlByTime(time) {
+		window.setTimeout('returnUrlByTime(time)', 1000);
+		console.log(time);
+		time = time - 1;
+		if(time<=0){
+			time = 0;
+			window.setTimeout("window.location.href='/';window.event.returnValue=false;", 0);
+		}
+		document.getElementById("layer").innerHTML = time;
+	}
+</script>
+
+</html>

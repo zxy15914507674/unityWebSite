@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="unity.dao.ComplainMapper">
+  <resultMap id="BaseResultMap" type="unity.pojo.Complain">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="manid" jdbcType="INTEGER" property="manid" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="complaintime" jdbcType="VARCHAR" property="complaintime" />
+    <result column="manname" jdbcType="VARCHAR" property="manname" />
+  </resultMap>
+
+  <insert id="insert" parameterType="unity.pojo.Complain">
+    insert into complain (id, manid,
+      content, complaintime,manname
+      )
+    values (#{id,jdbcType=INTEGER}, #{manid,jdbcType=INTEGER},
+      #{content,jdbcType=VARCHAR}, #{complaintime,jdbcType=VARCHAR},
+      #{manname,jdbcType=VARCHAR}
+      )
+  </insert>
+
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, manid,
+      content, complaintime,manname
+    from complain
+  </select>
+
+
+
+</mapper>

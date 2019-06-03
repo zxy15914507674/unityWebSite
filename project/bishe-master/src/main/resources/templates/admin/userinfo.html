@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/static/bootstrap-3.3.7/css/bootstrap.css}"/>
+    <script th:src="@{/static/layui/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/static/bootstrap-3.3.7/js/bootstrap.js}"></script>
+</head>
+<style>
+    .normal{ font-weight:normal}
+</style>
+<body>
+    <div class="page-header">
+        <h3>用户名：</h3><h4 th:text="${user.username}"  ></h4>
+    </div>
+    <div class="page-header">
+        <h3>邮箱：</h3><h4 th:text="${user.email}" ></h4>
+    </div>
+    <div class="page-header">
+        <h3>电话号码：</h3><h4 th:text="${user.tel}" ></h4>
+    </div>
+    <div class="page-header">
+        <h3>注册日期：</h3>
+        <h4 th:text="${user.registrationtime}" ></h4>
+    </div>
+
+
+
+
+</body>
+</html>
+ 
+
+

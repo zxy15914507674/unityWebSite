@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}">
+    <script th:src="@{/static/layui/layui.js}"></script>
+    <script th:src="@{/static/layui/jquery-3.3.1.min.js}"></script>
+</head>
+<body>
+<input type="text" id="workmanid" th:hidden="true" th:value="${workmanid}">
+<table id="worktable" lay-filter="worktabletool">
+</table>
+
+</body>
+
+<script type="text/javascript">
+
+    layui.use(['table','laypage','layer','element','laytpl'], function(){
+        var laypage=layui.laypage;
+        var table = layui.table;
+        var layer=layui.layer;
+        var element = layui.element;
+        var laytpl=layui.laytpl;
+        //第一个实例
+        table.render({
+            elem: '#worktable'
+            ,url: '/admin/getSomeoneWorks' //数据接口
+            ,where: { workmanid:$("#workmanid").val() } //接口参数
+            ,page: true //开启分页
+            ,method: 'get'
+            ,limit:10
+            ,limits:[5,10,15]
+            ,cols: [    //layui中方括号必须这么写（上下各一个，而不能写成"[["这样,否则thyleaf模板解析错误)
+                [ //表头
+                    {field: 'id', title: 'ID', width:100,  fixed: 'left'}
+                    ,{field: 'workname', title: '作品名称', width:100}
+                    ,{field: 'keyword', title: '关键词', width:100}
+                    ,{field: 'content', title: '介绍', width:100}
+                    ,{field: 'worktype', title: '作品类型', width:100, templet: '#typeTpl'}
+                ]
+            ]
+        });
+
+    });
+</script>
+
+<!--layui的模板引擎-->
+<script type="text/html" id="typeTpl">
+    {{#  if(d.worktype == 1){ }}
+        [[#{index.Chemistry}]]
+    {{#  } else if(d.worktype == 2){ }}
+        [[#{index.Physics}]]
+    {{#  }else { }}
+        [[#{index.Biology}]]
+    {{# } }}
+</script>
+</html>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="unity.dao.WorkMapper">
+  <resultMap id="BaseResultMap" type="unity.pojo.Work">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="workname" jdbcType="VARCHAR" property="workname" />
+    <result column="workmanid" jdbcType="INTEGER" property="workmanid" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="pictures" jdbcType="VARCHAR" property="pictures" />
+    <result column="keyword" jdbcType="VARCHAR" property="keyword" />
+    <result column="worktype" jdbcType="INTEGER" property="worktype" />
+    <result column="score" jdbcType="LONGVARCHAR" property="score" />
+    <result column="workaddress" jdbcType="VARCHAR" property="workaddress" />
+    <result column="forfree" jdbcType="INTEGER" property="forfree" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from work
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="unity.pojo.Work" keyProperty="id" useGeneratedKeys="true">
+    insert into work (id, workname, workmanid, 
+      content, pictures, keyword, 
+      worktype, score,workaddress,forfree)
+    values (#{id,jdbcType=INTEGER}, #{workname,jdbcType=VARCHAR}, #{workmanid,jdbcType=INTEGER}, 
+      #{content,jdbcType=VARCHAR}, #{pictures,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR},
+      #{worktype,jdbcType=INTEGER}, #{score,jdbcType=LONGVARCHAR},#{workaddress,jdbcType=VARCHAR},
+      #{forfree,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="unity.pojo.Work">
+    update work
+    set workname = #{workname,jdbcType=VARCHAR},
+      workmanid = #{workmanid,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      pictures = #{pictures,jdbcType=VARCHAR},
+      keyword = #{keyword,jdbcType=VARCHAR},
+      worktype = #{worktype,jdbcType=INTEGER},
+      score = #{score,jdbcType=LONGVARCHAR},
+      workaddress = #{workaddress,jdbcType=VARCHAR},
+      forfree = #{forfree,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, workname, workmanid, content, pictures, keyword, worktype, score, workaddress, forfree
+    from work
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, workname, workmanid, content, pictures, keyword, worktype, score, workaddress, forfree
+    from work
+  </select>
+
+  <select id="selectByWorkmanId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select id, workname, workmanid, content, pictures, keyword, worktype, score, workaddress, forfree
+    from work
+    where workmanid= #{workmanid,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByType" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select id, workname, workmanid, content, pictures, keyword, worktype, score, workaddress, forfree
+    from work
+    where worktype = #{worktype,jdbcType=INTEGER}
+  </select>
+
+  <select id="getfree"  resultMap="BaseResultMap">
+    select id, workname, workmanid, content, pictures, keyword, worktype, score, workaddress, forfree
+    from work
+    where forfree = 1
+  </select>
+
+  <select id="getsum" resultType="java.lang.Integer">
+    select count(1)
+    from work
+  </select>
+
+</mapper>

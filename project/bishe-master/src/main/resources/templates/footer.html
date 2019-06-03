@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/static/bootstrap-3.3.7/css/bootstrap.css}"/>
+    <script th:src="@{/static/layui/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/static/bootstrap-3.3.7/js/bootstrap.js}"></script>
+</head>
+<body>
+
+    <div th:fragment="foot">
+        <div class="footer">
+            <div class="container">
+                <div class="ftr-sec">
+                    <div class="col-md-4 ftr-grid">
+                        <h3>Text Module</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut odio ut quam convallis ultricies. Morbi rutrum lectus tortor. Cras vitae semper mi, et feugiat dolor.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut odio ut quam convallis ultricies. Morbi rutrum lectus tortor. Cras vitae semper mi, et feugiat dolor.</p>
+                    </div>
+                    <div class="col-md-4 ftr-grid2">
+                        <h3>Pages</h3>
+                        <ul>
+                            <li><a href="index.html"><span></span>Home</a></li>
+                            <li><a href="about.html"><span></span>About</a></li>
+                            <li><a href="program.html"><span></span>Programs</a></li>
+                            <li><a href="blog.html"><span></span>Blog</a></li>
+                            <li><a href="gallery.html"><span></span>Gallery</a></li>
+                            <li><a href="contact.html"><span></span>Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4 ftr-grid3">
+                        <h3>Quick links</h3>
+                        <ul>
+                            <li><a href="about.html"><span></span>History</a></li>
+                            <li><a href="about.html"><span></span>Departments</a></li>
+                            <li><a href="gallery.html"><span></span>Services</a></li>
+                            <li><a href="blog.html"><span></span>Guidancs</a></li>
+                            <li><a href="about.html"><span></span>Team</a></li>
+                            <li><a href="contact.html"><span></span>Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="copywrite">
+            <div class="container">
+                <p>Copyright © 2019 University. All rights reserved | Design by <a href="http://www.gdut.edu.cn/">GDUT</a></p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

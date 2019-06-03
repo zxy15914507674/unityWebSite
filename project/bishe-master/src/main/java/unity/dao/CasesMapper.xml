@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="unity.dao.CasesMapper">
+    <resultMap id="BaseResultMap" type="unity.pojo.Cases">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="casename" jdbcType="VARCHAR" property="casename" />
+        <result column="content" jdbcType="VARCHAR" property="content" />
+        <result column="image" jdbcType="VARCHAR" property="image" />
+    </resultMap>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from usecases
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+ <insert id="insert" parameterType="unity.pojo.Cases">
+    insert into usecases (id, casename, content, image
+      )
+    values (#{id,jdbcType=INTEGER}, #{casename,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR})
+ </insert>
+
+ <select id="selectAll" resultMap="BaseResultMap">
+    select id, casename, content, image
+    from usecases
+ </select>
+</mapper>

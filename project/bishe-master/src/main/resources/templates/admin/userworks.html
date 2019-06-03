@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}">
+    <script th:src="@{/static/layui/layui.js}"></script>
+    <script th:src="@{/static/layui/jquery-3.3.1.min.js}"></script>
+</head>
+<body>
+<table id="worktable" lay-filter="worktabletool">
+</table>
+<input type="text" id="workmanid" th:hidden="true" th:value="${workmanid}">
+</body>
+
+<!--工具条-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="add">实验上传</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="addimage">新增图片</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script type="text/javascript">
+
+    layui.use(['table','laypage','layer','element','laytpl'], function(){
+        var laypage=layui.laypage;
+        var table = layui.table;
+        var layer=layui.layer;
+        var element = layui.element;
+        var laytpl=layui.laytpl;
+        //第一个实例
+        table.render({
+            elem: '#worktable'
+            ,url: '/admin/getSomeoneWorks' //数据接口
+            ,where: { workmanid:$("#workmanid").val() } //接口参数
+            ,page: true //开启分页
+            ,method: 'get'
+            ,limit:10
+            ,limits:[5,10,15]
+            ,cols: [    //layui中方括号必须这么写（上下各一个，而不能写成"[["这样,否则thyleaf模板解析错误)
+                [ //表头
+                    {field: 'id', title: 'ID', width:100,  fixed: 'left'}
+                    ,{field: 'workname', title: '作品名称', width:100}
+                    ,{field: 'keyword', title: '关键词', width:100}
+                    ,{field: 'content', title: '介绍', width:100}
+                    ,{field: 'worktype', title: '实验类型', width:100, templet: '#typeTpl'}
+                    ,{field: 'option', title: '选项', width:245,toolbar: '#barDemo'}
+                ]
+            ]
+        });
+
+        //必须把on这个方法写在use方法里，否则on方法为未定义，固定的写法
+        table.on('tool(worktabletool)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+            if(layEvent === 'del'){ //删除
+                layer.confirm('实验及图片都会被删除，确认删除？', function(index){
+                    //向服务端发送删除指令
+                    $.get("/admin/delwork",{
+                        id : data.id
+                    },function(data1,textStatus){
+                        //textStatus假如不是success，不执行回调函数,但是我的后台捕捉了异常，
+                        //所以一定会成功执行这回调函数，故通过后台返回的Msg是否删除成功
+                        if(data1.msg === '200'){
+                            layer.msg("删除成功", {icon :1});
+                            obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                            layer.close(index);
+                        }else{
+                            layer.msg("删除失败，该分类下可能有文章",{icon :2});
+                            layer.close(index);
+                        }
+                    },"json");
+                });
+            } else if(layEvent === 'edit'){ //修改
+                layer.prompt({    //弹出层--->输入层
+                    formType: 2,
+                    value: data.content,
+                    title: '修改实验描述',
+                }, function(value, index, elem){
+                    $.get("/admin/editwork",{
+                        id : data.id
+                        ,workcontent : value
+                    },function(data1,textStatus){
+                        if(data1.msg === '200'){
+                            layer.msg("修改成功", {icon :1});
+                            //同步更新缓存对应的值
+                            obj.update({
+                                id: data.id
+                                ,content: value
+                            });
+                            layer.close(index);
+                        }else{
+                            layer.msg("修改失败",{icon :2});
+                            layer.close(index);
+                        }
+                    },"json");
+                });
+            }else if(layEvent === 'add'){  //添加
+                parent.opentab('上传实验','workupload',data.id);   //传入作品id
+            }else if((layEvent === 'addimage')){  //为作品新增图片
+                parent.opentab('增加图片','addimage',data.id);
+            }
+        });
+    });
+</script>
+
+<!--layui的模板引擎-->
+<script type="text/html" id="typeTpl">
+    {{#  if(d.worktype == 1){ }}
+        [[#{index.Chemistry}]]
+    {{#  } else if(d.worktype == 2){ }}
+        [[#{index.Physics}]]
+    {{#  }else { }}
+        [[#{index.Biology}]]
+    {{# } }}
+</script>
+</html>

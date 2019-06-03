@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>head</title>    <!--通用头部-->
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top" style="background:#171717;"  th:fragment="headbar">
+
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header mynav">
+            <a class="navbar-brand" href="/">
+                <span class="glyphicon glyphicon-home" aria-hidden="true"></span> 第一虚拟课堂
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li th:if="${(session.currentUser!=null)&&(session.currentUser.usertype!=0)}"><a href="/backstage" th:text="#{head.backstage}">进入后台</a></li>
+            </ul>
+            <form class="navbar-form navbar-right" id="queryfrom" onkeydown="cdk()">
+                <div class="form-group">
+                    <input type="text" id="queryword" class="form-control searchinput" th:placeholder="#{head.search}">
+                </div>
+                <a href ="javascript:search()" class="searchbtn" id="searchbtn"></a>
+            </form>
+            <ul class="nav navbar-nav navbar-right" th:if="${session.currentUser!=null}">
+                <li><a href="/logout" th:text="#{head.logout}">退出登陆</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a th:href="${session.currentUser!=null}?'#':'/login'">
+                        <p th:text="${session.currentUser!=null}?${session.currentUser.username}:#{head.login}"></p>
+                    </a>
+                </li>
+
+                <li>
+                    <a th:if="${session.currentUser==null}" th:href="@{/register}">
+                        <p th:text="#{register}"></p>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:text="#{head.change}">语言切换 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/changelang(language='zh')}" th:text="#{head.lang1}">中文</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a th:href="@{/changelang(language='en')}" th:text="#{head.lang2}">英文</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+</body>
+</html>

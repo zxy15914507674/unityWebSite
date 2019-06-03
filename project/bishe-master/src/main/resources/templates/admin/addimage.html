@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/static/css/addimage.css}">
+
+    <script th:src="@{/static/layui/layui.js}"></script>
+    <script th:src="@{/static/layui/jquery-3.3.1.min.js}"></script>
+</head>
+
+<body>
+
+    <input type="text" id="workid" th:hidden="true" th:value="${workid}">
+    <input type="text" id="workmanid" th:hidden="true" th:value="${workmanid}">
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+        <legend>图片</legend>
+    </fieldset>
+
+    <div style="margin-bottom: 20px;">
+         <div  th:each="image:${images}" class="layui-col-md4">
+             <div class="showimages">
+                 <img th:src="@{/upload/__${image}__}" th:onclick="'delimage(\''+${image}+'\')' " class="delshowimg"/>
+             </div>
+         </div>
+    </div>
+
+    <div class="layui-col-md12">
+        <fieldset class="layui-elem-field layui-field-title " style="margin-top: 30px;">
+            <legend>上传图片</legend>
+        </fieldset>
+
+        <div class="layui-upload">
+            <button type="button" class="layui-btn" id="test2">选择图片</button>
+            <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                预览图：
+                <div class="layui-upload-list" id="preview"></div>
+            </blockquote>
+            <button class="layui-btn" id="toUpload">
+                <i class="layui-icon">&#xe67c;</i>上传
+            </button>
+        </div>
+    </div>
+</body>
+
+<script>
+    layui.use(['upload','layer'], function(){
+        var upload = layui.upload;
+        var layer=layui.layer;
+
+        var workid=$("#workid").val();
+        var workmanid=$("#workmanid").val();
+
+        //多图片上传
+        var uploadInst=upload.render({
+            elem: '#test2'
+            ,url: '/admin/uploadimg/'
+            ,multiple: true
+            ,auto:false
+            ,bindAction:'#toUpload'
+            ,field:'files'
+            ,data:{workid:workid,workmanid:workmanid}
+            ,choose: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#preview').append('<img src="'+ result +'" alt="'+ file.name +'" height="200" width="200" class="layui-upload-img">')
+                });
+            }
+            ,allDone: function(obj){ //当文件全部被提交后，才触发
+                //console.log(obj.total); //得到总文件数
+                //console.log(obj.successful); //得到上传成功文件数
+                $('#preview').empty();   //删除预览图
+                layer.open({
+                    title: '通知'
+                    ,content: '上传成功'
+                });
+            },done: function(res){  //单个文件上传成功后触发
+                console.log("ok");
+            }
+        });
+    });
+
+    function delimage(img){
+        var layer=layui.layer;
+        var workid=$("#workid").val();
+        layer.confirm("真的删除该图片吗？",function(index){
+            $.get("/admin/delimg",{
+                img : img,
+                workid:workid
+            },function(data1,textStatus){
+                //textStatus假如不是success，不执行回调函数
+                if(data1.code == 400){
+                    layer.msg("删除失败，联系管理员",{icon :2});
+                    layer.close(index);
+                }else {
+                    layer.msg("删除成功", {icon :1});
+                    delimgdom(img);
+                    layer.close(index);
+                }
+            },"json");
+        });
+    }
+
+    function delimgdom(img){
+        var t=$(".delshowimg");
+        for(i=0;i<t.length;i++){
+            if(t[i].src.indexOf(img)!=-1){
+                t[i].remove();
+            }
+        }
+    }
+
+
+</script>
+
+</html>

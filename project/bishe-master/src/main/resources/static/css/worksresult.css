@@ -1,0 +1,168 @@
+/*
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+*/
+h4, h5, h6,
+h1, h2, h3 {margin: 0;}
+ul, ol {margin: 0; padding:0;}
+p {margin: 0;}
+html, body{
+
+    width: 100%;
+
+	font-family: 'OpenSans-Regular';
+    font-size: 100%;
+}
+body{
+    background:url(../images/VCG41175413535.jpg) no-repeat;
+    background-size: cover;
+}
+@font-face {
+   font-family: 'OpenSans-Regular';
+   src: url(../fonts/OpenSans-Regular.ttf)format('truetype');
+}
+@font-face {
+   font-family: 'Ubuntu-Medium';
+   src: url(../fonts/Ubuntu-Medium.ttf) format('truetype');
+}
+body a{
+	transition:0.5s all;
+	-webkit-transition:0.5s all;
+	-moz-transition:0.5s all;
+	-o-transition:0.5s all;
+	-ms-transition:0.5s all;
+}
+.row{
+	margin:0;
+}	
+.breadcrumb{
+	margin:2em 0;
+	text-align:left;
+}
+h1.b1, h2.b2, h3.b3 {
+  margin-bottom: 25px;
+  display: block;
+}
+
+
+/*-- footer --*/
+.footer{
+	padding:2em 0;
+	border-top:3px solid #4dc47d;
+}
+.ftr-grid {
+  padding:0 3em 0 0;
+}
+.ftr-grid h3,.ftr-grid2 h3,.ftr-grid3 h3{
+  font-family: 'Ubuntu-Medium';
+  font-size: 1.5em;
+  color: #181a1b;
+  margin-bottom: 0.7em;
+}
+.ftr-grid p {
+  line-height: 1.5em;
+  color: #999;
+  font-size: 0.9em;
+}
+.ftr-grid p:nth-child(3){
+	padding-top:1.3em;
+}
+.ftr-grid2,.ftr-grid3 {
+  padding-left: 6em;
+}
+.ftr-grid2 ul li,.ftr-grid3 ul li{
+	display:block;
+}
+.ftr-grid2 ul li a,.ftr-grid3 ul li a{
+	display:block;
+	padding:5px 0;
+	  color: #999;
+  font-size: 0.95em;
+}
+.ftr-grid2 ul li a span,.ftr-grid3 ul li a span{
+  width: 12px;
+  height: 10px;
+  display: inline-block;
+  background: url(../images/awr.png) no-repeat 0px 0px;
+  margin-right: 0.4em;
+}
+.copywrite{
+	background:#4dc47d;
+	padding:0.7em;
+}
+.copywrite p {
+  color: #fff;
+  font-size: 0.9em;
+  text-align: left;
+}
+.copywrite p a{
+	color: #fff;
+}
+
+
+/*--jieguo页面--*/
+
+.camp-grid h4{
+  color: #4dc47d;
+  font-family: 'Ubuntu-Medium';
+  font-size: 1.2em;
+  display:inline-block;
+  margin: 0.5em 0;
+  text-decoration:none;
+}
+.camp-grid del{
+    color: #4dc47d;
+    font-family: 'Ubuntu-Medium';
+    font-size: 1.2em;
+    display:inline-block;
+    margin: 0.5em 0;
+    text-decoration:none;
+}
+.workimage {
+    width: 350px;
+    height: 210px;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.camp-grid a{
+    color: #4dc47d;
+    font-family: 'Ubuntu-Medium';
+    font-size: 1.2em;
+    display:inline-block;
+    margin: 0.5em 0;
+    text-decoration:none;
+}
+.camp-grid img{
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+.camp-grid p {
+  font-size: 0.95em;
+  color: #777;
+  line-height: 1.7em;
+}
+a.more{
+	font-size:0.9em;
+	margin-top:0.6em;
+	display:inline-block;
+	color:white;
+	text-decoration:none;
+}
+
+div.noinfo{
+    height: 120px;
+    color: white;
+}
+
+
+
+
+
+
+
+

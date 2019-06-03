@@ -1,0 +1,12 @@
+.showimages img{
+    width: 350px;
+    height: 210px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #d3d3d3;
+}
+
+
+.showimages img:hover{
+    border-color: red;
+}

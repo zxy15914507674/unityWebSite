@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}">
+    <script th:src="@{/static/layui/layui.js}"></script>
+    <script th:src="@{/static/layui/jquery-3.3.1.min.js}"></script>
+</head>
+<body>
+<table id="worktable" lay-filter="worktabletool">
+</table>
+
+</body>
+
+<!--工具条-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="works">已上传实验</a>
+</script>
+
+<script type="text/javascript">
+
+    layui.use(['table','laypage','layer','element','laytpl'], function(){
+        var laypage=layui.laypage;
+        var table = layui.table;
+        var layer=layui.layer;
+        var element = layui.element;
+        var laytpl=layui.laytpl;
+        //第一个实例
+        table.render({
+            elem: '#worktable'
+            ,url: '/root/getallusers' //数据接口
+           // ,where: { workmanid:$("#workmanid").val() } //接口参数
+            ,page: true //开启分页
+            ,method: 'get'
+            ,limit:10
+            ,limits:[5,10,15]
+            ,cols: [    //layui中方括号必须这么写（上下各一个，而不能写成"[["这样,否则thyleaf模板解析错误)
+                [ //表头
+                    {field: 'id', title: 'ID', width:100,  fixed: 'left'}
+                    ,{field: 'username', title: '用户名', width:100}
+                    ,{field: 'email', title: '邮箱', width:180}
+                    ,{field: 'tel', title: '联系电话', width:100}
+                    ,{field: 'usertype', title: '用户类型', width:100, templet: '#typeTpl'}
+                    ,{field: 'registrationtime', title: '注册时间', width:100}
+                    ,{field: 'option', title: '选项', width:180,toolbar: '#barDemo'}
+                ]
+            ]
+        });
+
+        table.on('tool(worktabletool)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+
+            if(layEvent === 'works'){  //添加
+                parent.opentab(data.username+'的实验','someonework',data.id);   //传入创作者id
+            }
+        });
+    });
+</script>
+
+<!--layui的模板引擎  显示用户类型-->
+<script type="text/html" id="typeTpl">
+    {{#  if(d.usertype == 0){ }}
+        [[#{register.type1}]]
+    {{#  } else if(d.usertype == 1){ }}
+        [[#{register.type2}]]
+    {{#  }else if(d.usertype == 3){ }}
+        root
+    {{#  }else{ }}
+        [[#{know}]]
+    {{# } }}
+</script>
+</html>

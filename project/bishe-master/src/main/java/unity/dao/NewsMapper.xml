@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="unity.dao.NewsMapper">
+    <resultMap id="BaseResultMap" type="unity.pojo.News">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="newsname" jdbcType="VARCHAR" property="newsname" />
+        <result column="content" jdbcType="VARCHAR" property="newscontent" />
+        <result column="ctime" jdbcType="VARCHAR" property="ctime" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from news
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+    <insert id="insert" parameterType="unity.pojo.News">
+    insert into news (id, newsname, content, ctime
+      )
+    values (#{id,jdbcType=INTEGER}, #{newsname,jdbcType=VARCHAR}, #{newscontent,jdbcType=VARCHAR}, #{ctime,jdbcType=VARCHAR})
+ </insert>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+    select id, newsname, content, ctime
+    from news
+ </select>
+</mapper>

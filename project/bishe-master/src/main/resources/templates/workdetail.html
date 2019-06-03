@@ -1,0 +1,160 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>详情页</title>
+
+<link rel="stylesheet" th:href="@{/static/bootstrap-3.3.7/css/bootstrap.css}" type="text/css"/>
+<link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"  type='text/css' />
+<link rel="stylesheet" th:href="@{/static/css/workdetail.css}"  type='text/css' />
+<link th:href="@{/static/css/head.css}" rel='stylesheet' type='text/css' />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="hello" />
+
+<script th:src="@{/static/layui/jquery-3.3.1.min.js}"></script>
+<script th:src="@{/static/bootstrap-3.3.7/js/bootstrap.js}"></script>
+<script th:src="@{/static/layui/layui.js}"></script>
+<script th:src="@{/static/js/search.js}"></script>
+
+</head>
+
+<body>
+
+<input type="text" th:hidden="true" th:value="${workvo.dladdress}" id="dladdress"/>
+
+
+<div th:replace="head :: headbar">
+</div>
+
+<div class="about-sec">
+	<div class="container">
+		  <div class="about-head">
+			<h2 th:text="${workvo.workname}">实验名称</h2>
+		  </div>
+		  <div class="shiyan-grid">
+            <div id="myCarousel" class="col-md-6 carousel slide shiyan">
+                <!-- 轮播（Carousel）指标 -->
+                <ol class="carousel-indicators">
+
+                </ol>   
+                <!-- 轮播（Carousel）项目 -->
+                <div class="carousel-inner">
+					<div th:if="${#lists.size(workvo.imagelist)>0}" th:each="image,iterStat:${workvo.imagelist}" th:class="${iterStat.first}?'lunboimage item active':'lunboimage item'" align="center">
+						<img th:src="@{/showimage/__${image}__}"style="height: 100%;">
+					</div>
+					<div class="item active lunboimage"  align="center" th:unless="${#lists.size(workvo.imagelist)>0}" >
+						<img th:src="@{/static/images/noimage.png}">
+					</div>
+                </div>
+                <!-- 轮播（Carousel）导航 -->
+                <a class="carousel-control left" href="#myCarousel" 
+                   data-slide="prev"> <span _ngcontent-c3="" aria-hidden="true" class="glyphicon glyphicon-chevron-left"></span></a>
+                <a class="carousel-control right" href="#myCarousel" 
+                   data-slide="next"> <span _ngcontent-c3="" aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span></a>
+            </div>
+	
+			 <div class="col-md-6 shiyan-info" style="height:320px;">
+                <div class="panel panel-success" style="border:0px;">
+                    <div class="panel-heading" th:text="#{workdetail.introduction}"></div>
+                    <div class="panel-body" th:text="${workvo.content}">
+                        Panel content
+                    </div>
+                </div>
+                 <form id="downloadform">
+                    <h3 th:text="#{workdetail.keyword}+'：'+${workvo.keyword}" style="float:right;"></h3>
+                     <!--登陆了的用户能够下载所有实验，没有登陆的只能下载免费的实验-->
+				    <button style="position: absolute;bottom:0px;" type="button" class="btn btn-default" disabled="disabled" th:if="${workvo.dladdress==null}">未提供下载</button>
+                    <button style="position: absolute;bottom:0px;" type="button" class="btn btn-default" disabled="disabled" th:if="${workvo.dladdress!=null&&session.currentUser==null&&workvo.forfree!=1}"
+                    >未提供下载[[#{workdetail.needlogin}]]</button>
+                    <button onclick="javascript:download()" style="position: absolute;bottom:0px;" type="button" class="btn btn-success"
+                            th:if="${(workvo.dladdress!=null&&session.currentUser!=null)||(workvo.dladdress!=null&&session.currentUser==null&&workvo.forfree==1)}">[[#{workdetail.download}]]</button>
+                 </form>
+             </div>
+            <div class="clearfix"></div>
+         </div>
+   </div>
+</div>
+
+<div class="news">
+    <div class="container">
+        <div class="col-md-8">
+           <h3 th:text="#{workdetail.comment}">评论</h3>
+           <form action="/assess" id="assessform" method="post">
+               <div class="form-group">
+                 <label th:text="#{workdetail.scoring}">给实验打分</label>
+                 <p><div id="layuitest"></div></p>
+               </div>
+               <div class="form-group">
+                 <label th:text="#{workdetail.writecomments}">写下你的评论</label><span style="color: red;" id="tixing"></span>
+                 <textarea class="form-control" rows="3" style="resize:none;" id="assesscontent" name="content"></textarea>
+               </div>
+               <input type="text" th:hidden="true" th:value="0" id="starvalue" name="starvalue"/>
+               <input type="text" th:hidden="true" th:value="${workvo.workid}"  id="workid" name="workId"/>
+               <input type="text" th:hidden="true" th:if="${session.currentUser!=null}" th:value="${session.currentUser.id}" id="valuerid" name="valuerId"/>
+               <button type="button" class="btn btn-default submitbtn" onclick="javascript:starsubmit()">[[#{workdetail.submit}]]</button>
+           </form>
+        </div>
+        <div class="event-grids col-md-4">
+           <h3 th:text="#{workdetail.recentcomments}">最近的评论</h3>
+           <div class="event-grid" th:each="assess:${assesslist}" style="padding-bottom: 10px;">
+                <div class="date">
+                    <h4 th:text="${#strings.substring(assess.assessdate,8,10)}">26</h4>
+                    <span th:text="${#strings.substring(assess.assessdate,0,7)}">08/2012</span>
+                </div>
+                <div class="event-info">
+                     <h5 style="color: #dd001b" th:text="${assess.star}+'分'">********</h5>
+                       <p th:text="${assess.content}" >评论内容</p>
+                       <h5 class="accessman" th:text="${assess.assessername}">John.Mr</h5>
+                </div>
+           </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+
+
+
+<script>
+  //打分
+  function starsubmit(){
+		var assesscontent=$("#assesscontent").val();
+		var starvalue=$("#starvalue").val();
+		debugger;
+		if(starvalue==0){
+            $("#tixing").text("[[#{workdetail.scoringtip}]]");  //国际化
+        }else if(assesscontent==""){
+            $("#tixing").text("[[#{workdetail.commenttip}]]");
+        }else{
+            $("#assessform").submit();
+        }
+  }
+
+  //下载
+   function download(){
+       var dladdress=$("#dladdress").val();
+       //debugger;
+       //使用post方法提交表单并下载
+       $("#downloadform").attr("action","/download?fileaddress="+dladdress);
+       $("#downloadform").attr("method","post").submit();
+   }
+
+  //打分设置
+  layui.use('rate', function(){
+    var rate = layui.rate;
+    //渲染
+    var ins1 = rate.render({
+		elem: '#layuitest' //绑定元素
+		,choose: function (value) {
+			$("#starvalue").val(value);
+		}
+	});
+
+  });
+</script>
+
+</html>

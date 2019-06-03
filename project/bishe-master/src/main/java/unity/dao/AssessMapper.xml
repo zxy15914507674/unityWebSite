@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="unity.dao.AssessMapper">
+  <resultMap id="BaseResultMap" type="unity.pojo.Assess">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="valuerid" jdbcType="INTEGER" property="valuerid" />
+    <result column="workid" jdbcType="INTEGER" property="workid" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="star" jdbcType="INTEGER" property="star" />
+    <result column="assessdate" jdbcType="VARCHAR" property="assessdate" />
+    <result column="assessername" jdbcType="VARCHAR" property="assessername" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from assess
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="unity.pojo.Assess">
+    insert into assess (id, valuerid, workid, 
+      content, star, assessdate,assessername
+      )
+    values (#{id,jdbcType=INTEGER}, #{valuerid,jdbcType=INTEGER}, #{workid,jdbcType=INTEGER}, 
+      #{content,jdbcType=VARCHAR}, #{star,jdbcType=INTEGER}, #{assessdate,jdbcType=VARCHAR},
+      #{assessername,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="unity.pojo.Assess">
+    update assess
+    set valuerid = #{valuerid,jdbcType=INTEGER},
+      workid = #{workid,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      star = #{star,jdbcType=INTEGER},
+      assessdate = #{assessdate,jdbcType=VARCHAR},
+      assessername = #{assessername,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, valuerid, workid, content, star, assessdate, assessername
+    from assess
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, valuerid, workid, content, star, assessdate, assessername
+    from assess
+  </select>
+
+  <select id="selectByWorkId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select  id, valuerid, workid, content, star, assessdate, assessername
+    from assess
+    where workid = #{workId,jdbcType=INTEGER}
+    order by id desc
+  </select>
+
+</mapper>

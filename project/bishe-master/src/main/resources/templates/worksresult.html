@@ -1,0 +1,103 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title th:text="#{worksresult.title}">结果</title>
+
+<link rel="stylesheet" th:href="@{/static/bootstrap-3.3.7/css/bootstrap.css}" type="text/css"/>
+<link th:href="@{/static/css/worksresult.css}" rel='stylesheet' type='text/css' />
+<link th:href="@{/static/css/head.css}" rel='stylesheet' type='text/css' />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+<script th:src="@{/static/layui/jquery-3.3.1.min.js}"></script>
+<script th:src="@{/static/bootstrap-3.3.7/js/bootstrap.js}"></script>
+<script th:src="@{/static/js/search.js}"></script>
+
+
+</head>
+
+<body>
+
+<input type="text" th:unless="${#strings.isEmpty(queryword)}" th:hidden="true" th:value="${queryword}" id="isquery"/>
+
+<div th:replace="head :: headbar">
+</div>
+
+
+<div class="about-sec">
+	 <div class="container">
+
+		<div class="page-header" style="margin-top:5em" th:unless="${#strings.isEmpty(queryword)}">
+			<h1 style="color: #4cae4c;"  th:text="${queryword}"></h1><h3>[[#{worksresult.result}]]</h3>
+		</div>
+		<div th:if="${#lists.size(workresults)==0}" class="noinfo">[[#{worksresult.noinfo}]]</div>
+		<div class="our_work">
+			<div class="col-md-4 camp-grid" th:each="workvo:${workresults}" align="center">
+				<a th:href="'/g/id/'+${workvo.workid}">
+					<div class="workimage">
+						<img th:unless="${workvo.indeximage==null}" th:src="@{/showimage/__${workvo.indeximage}__}" class="img-responsive"/>
+						<img th:if="${workvo.indeximage==null}" th:src="@{/static/images/noimage.png}" class="img-responsive" alt=""/>
+					</div>
+				</a>
+				<h4 th:text="${workvo.workname}" th:if="${workvo.forfree==1}">$$$</h4>
+				<del th:text="${workvo.workname}" th:if="${workvo.forfree!=1}">$$$</del>
+				<p th:text="${workvo.content}">$$$</p>
+				<a th:href="'/g/id/'+${workvo.workid}" class="more">[ [[#{worksresult.readmore}]] ]</a>
+			</div>
+		</div>
+
+
+		 <div  th:if="${#lists.size(workresults)}==9" class="col-md-12" align="center">
+			 <ul class="pagination">
+				 <li th:class="${currentpage==1}?'disabled':'btn'">
+					 <a th:attr="href='?page=1'" aria-label="Previous" th:class="${currentpage==1}?'btn disabled':'btn'">
+						 <span aria-hidden="true">&laquo;</span>
+					 </a>
+				 </li>
+				 <li th:class="${currentpage==1}?'disabled':'btn'">
+					 <a th:attr="href='?page='+${currentpage-1}" th:class="${currentpage==1}?'btn disabled':'btn'">
+						 <span aria-hidden="true">&lt;</span>
+					 </a>
+				 </li>
+
+				 <li th:if="${startpage<=allpages}"><a th:attr="href='?page='+${startpage}" th:text="${startpage}" class="btn"></a></li>
+				 <li th:if="${startpage+1<=allpages}"><a th:attr="href='?page='+${startpage+1}" th:text="${startpage+1}" class="btn"></a></li>
+				 <li th:if="${startpage+2<=allpages}"><a th:attr="href='?page='+${startpage+2}" th:text="${startpage+2}" class="btn"></a></li>
+				 <li th:if="${startpage+3<=allpages}"><a th:attr="href='?page='+${startpage+3}" th:text="${startpage+3}" class="btn"></a></li>
+				 <li th:if="${startpage+4<=allpages}"><a th:attr="href='?page='+${startpage+4}" th:text="${startpage+4}" class="btn"></a></li>
+
+				 <li th:class="${currentpage==allpages}?'disabled':''">
+					 <a th:attr="href='?page='+${currentpage+1}" th:class="${currentpage==allpages}?'btn disabled':'btn'">
+						 <span aria-hidden="true">&gt;</span>
+					 </a>
+				 </li>
+				 <li th:class="${currentpage==allpages}?'disabled':''">
+					 <a th:attr="href='?page='+${allpages}" aria-label="Next" th:class="${currentpage==allpages}?'btn disabled':'btn'">
+						 <span aria-hidden="true">&raquo;</span>
+					 </a>
+				 </li>
+			 </ul>
+		 </div>
+	</div>
+</div>
+
+<script>
+	//关键字查询时为分页带上参数
+	$(function () {
+		var queryword=$("#isquery").val();
+		if(queryword!=undefined){
+			var length=$(".pagination a").length;
+			var aa=$(".pagination a");
+			for(var i=0;i<length;i++){
+				ahref=$(aa[i]).attr("href");
+				$(aa[i]).attr("href",ahref+"&queryword="+queryword);
+			}
+		}
+	})
+</script>
+
+</body>
+</html>

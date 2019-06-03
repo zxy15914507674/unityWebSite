@@ -1,0 +1,33 @@
+
+.navbar-default .navbar-nav > li > a:hover{
+    color: white;
+}
+
+.mynav :hover{
+    color: white!important;
+}
+
+.searchinput{
+	border:1px solid #0c0c0c;
+	border-radius: 50px;
+	background-color: #222;
+	display:inline;
+}
+
+.searchbtn{
+	width:200px;
+	height:200px;
+	top:-75px;
+	right: -60px;
+	background:url(../images/sousuo.png) no-repeat;
+	transform: scale(0.1);
+	position: absolute;
+}
+
+
+
+
+
+
+
+

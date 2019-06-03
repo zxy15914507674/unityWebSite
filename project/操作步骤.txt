@@ -1,0 +1,97 @@
+1 安装java的JDK1.8,并配置环境变量
+
+2 安装maven,
+  2.1 并配置环境变量
+  2.2 配置apache-maven-3.6.0\conf目录下的settings配置文件  <localRepository>C:\maven\maven\repository</localRepository>
+3 来到工程目录
+ 3.1 使用命令 mvn clean package -DskipTests进行清理并重新打包
+ 3.2 来到工程目录下的targe文件夹内，
+     使用命令运行刚才打包的jar包   命令：java -jar  你的jar包名称.jar
+
+4 在浏览器中输入:  http://你的ip地址:8088/login.html 
+  出现登录界面，代表运行成功
+
+5 安装mysql数据库
+
+6 在配置文件application.properties中配置上传文件和索引等的保存路径,在配置文件generatorConfig.xml中配置数据库的连接字符串,同时也需要在配置文件application.properties中修改数据库的连接字符串
+
+7 安装java编辑器IEDA
+
+
+
+
+
+
+
+
+
+
+
+
+sql脚本
+
+CREATE TABLE `assess` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `valuerid` int(11) DEFAULT NULL COMMENT '评价者的id',
+  `workid` int(11) DEFAULT NULL COMMENT '评价的作品id',
+  `content` varchar(500) DEFAULT NULL COMMENT '评价的内容',
+  `star` int(11) DEFAULT NULL COMMENT '评价的星级',
+  `assessdate` varchar(40) DEFAULT NULL COMMENT '评价的时间',
+  `assessername` varchar(40) DEFAULT NULL COMMENT '评价人昵称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `news` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `newsname` varchar(100) NOT NULL COMMENT '公告标题',
+  `content` varchar(500) NOT NULL COMMENT '公告内容',
+  `ctime` varchar(20) NOT NULL COMMENT '公告创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `usecases` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `casename` varchar(100) NOT NULL COMMENT '案例标题',
+  `content` varchar(500) NOT NULL COMMENT '案例内容',
+  `image` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(20) DEFAULT NULL COMMENT '用户名',
+  `email` varchar(40) DEFAULT NULL COMMENT '用户邮箱',
+  `tel` varchar(20) DEFAULT NULL COMMENT '用户电话',
+  `registrationtime` varchar(40) DEFAULT NULL COMMENT '注册时间',
+  `usertype` int(11) DEFAULT NULL COMMENT '用户类型 0普通用户 1制作者',
+  `password` varchar(50) NOT NULL COMMENT '用户密码',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+CREATE TABLE `work` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `workname` varchar(50) DEFAULT NULL COMMENT '作品名称',
+  `workmanid` int(11) DEFAULT NULL COMMENT '作品作者的id',
+  `content` varchar(500) DEFAULT NULL COMMENT '作品内容介绍',
+  `pictures` varchar(1000) DEFAULT NULL COMMENT '作品图片',
+  `keyword` varchar(50) DEFAULT NULL COMMENT '作品关键字',
+  `worktype` int(3) NOT NULL COMMENT '实验类型 1化学 2物理 3生物',
+  `score` mediumtext COMMENT '获得的评价总分',
+  `workaddress` varchar(200) DEFAULT NULL COMMENT '实验保存地址',
+  `forfree` int(3) DEFAULT '1' COMMENT '1为免费下载，0为其他',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `complain` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `manid` int(11) DEFAULT NULL COMMENT '投诉者的id',
+  `content` varchar(500) DEFAULT NULL COMMENT '投诉的内容',
+  `complaintime` varchar(40) DEFAULT NULL COMMENT '评价的时间',
+  `manname` varchar(40) DEFAULT NULL COMMENT '投诉人昵称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+
+
+管理员用户需要预先在数据库中设置，插入语句为：
+INSERT INTO `user`(`id`, `username`, `email`, `tel`, `registrationtime`, `usertype`, `password`) VALUES (1, '邱文捷', '932964177@qq.com', '13113176571', '2019-2-23', 3, '90fe32d8ba4135db6265c70aa48892fb');
