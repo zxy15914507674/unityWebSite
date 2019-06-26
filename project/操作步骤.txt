@@ -68,19 +68,26 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
-CREATE TABLE `work` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `workname` varchar(50) DEFAULT NULL COMMENT '作品名称',
-  `workmanid` int(11) DEFAULT NULL COMMENT '作品作者的id',
-  `content` varchar(500) DEFAULT NULL COMMENT '作品内容介绍',
-  `pictures` varchar(1000) DEFAULT NULL COMMENT '作品图片',
-  `keyword` varchar(50) DEFAULT NULL COMMENT '作品关键字',
-  `worktype` int(3) NOT NULL COMMENT '实验类型 1化学 2物理 3生物',
-  `score` mediumtext COMMENT '获得的评价总分',
-  `workaddress` varchar(200) DEFAULT NULL COMMENT '实验保存地址',
-  `forfree` int(3) DEFAULT '1' COMMENT '1为免费下载，0为其他',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8;
+
+use unity;
+create table ExpsTable(id int(11) NOT NULL AUTO_INCREMENT primary key,
+ ExpName varchar(20),ExpCourse varchar(40),
+ LabRoom varchar(40),ExpType varchar(50),
+ KeysWords varchar(100),IfFree varchar(10),
+ Introduction varchar(1000),
+ Pictures varchar(1000) DEFAULT NULL,
+ Workmanid int(11) DEFAULT NULL,
+ Score mediumtext,
+ ExpAddress varchar(200),
+ SceneName varchar(20)
+ )engine=InnoDB;
+ 
+insert into ExpsTable(ExpAddress,LabRoom,KeysWords,SceneName) values('动量守恒定律1.zip','电学实验室1','关键词','Scenes1 ');
+insert into ExpsTable(ExpAddress,LabRoom,KeysWords,SceneName) values('动量守恒定律2.zip','电学实验室2','关键词','Scenes2 ');
+insert into ExpsTable(ExpAddress,LabRoom,KeysWords,SceneName) values('动量守恒定律3.zip','电学实验室3','关键词','Scenes3 ');
+
+
+
 
 CREATE TABLE `complain` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
